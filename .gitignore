@@ -1,0 +1,70 @@
+######################
+### General files
+######################
+
+*.logs
+
+logs/
+out/
+target/
+build/
+tmp/
+
+*.class
+*.jar
+*.war
+*.ear
+*.db
+
+
+######################
+### Idea files
+######################
+
+.idea
+.idea_modules
+idea.bat
+*.iml
+
+
+######################
+# Eclipse
+######################
+ 
+.project
+.metadata
+bin/**
+tmp/**
+tmp/**/*
+*.tmp
+*.bak
+*.swp
+*~.nib
+local.properties
+.classpath
+.settings/
+.loadpath
+ 
+# Locally stored "Eclipse launch configurations"
+*.launch
+ 
+# CDT-specific
+.cproject
+ 
+# PDT-specific
+.buildpath
+
+
+######################
+### OS files
+######################
+
+# Mac OS 
+.DS_Store
+
+# Windows
+Thumbs.db
+Desktop.ini
+
+
+
