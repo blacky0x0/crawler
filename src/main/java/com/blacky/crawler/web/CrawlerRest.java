@@ -30,7 +30,7 @@ public class CrawlerRest {
      * The method saves a new item.
      * @return 200 OK - item was created
      */
-    @RequestMapping(value = "/new", method = RequestMethod.POST)
+    @RequestMapping(value = "/new", method = RequestMethod.GET)
     public ResponseEntity add(@RequestParam(value = "domain", required = true) String domain,
                               @RequestParam(value = "keyword", required = true) String keyword) {
         LOG.debug("Received parameters: domain = {} ; keyword = {}", domain, keyword);

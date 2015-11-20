@@ -36,7 +36,7 @@ public class CrawlerRestTest extends AbstractRestTest {
         String domain = "example.com";
         String keyword = "example";
 
-        mockMvc.perform(post(REST_URL_NEW_ONE).param("domain", domain).param("keyword", keyword))
+        mockMvc.perform(get(REST_URL_NEW_ONE).param("domain", domain).param("keyword", keyword))
                 .andDo(print())
                 .andExpect(forwardedUrl(null))
                 .andExpect(status().isOk())
