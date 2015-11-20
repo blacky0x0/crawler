@@ -39,4 +39,13 @@ public class CrawlerTask {
     public String getKeyword() {
         return keyword;
     }
+
+    @Override
+    public String toString() {
+        return "CrawlerTask{" +
+                "id=" + id +
+                ", domain='" + domain + '\'' +
+                ", keyword='" + keyword + '\'' +
+                '}';
+    }
 }

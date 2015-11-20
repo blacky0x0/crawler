@@ -31,17 +31,16 @@ public class CrawlerServiceTest extends AbstractServiceTest {
     // </editor-fold>
 
 
-    // <editor-fold desc="1 test. CrawlerService.add(String domain, String keyword)">
-/*
+    // <editor-fold desc="1 test. CrawlerService.get(Long long)">
     @Test
     public void get_result() throws Exception {
-        Integer id = 1;
+        String domain = "example.com";
+        String keyword = "example";
 
-        service.get(id);
+        CrawlerTask task = service.add(domain, keyword);
 
-        fail();
+        assertNotNull(service.get(task.getId()));
     }
-*/
     // </editor-fold>
 
 }

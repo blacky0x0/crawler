@@ -20,4 +20,7 @@ public class CrawlerTaskKeeper {
         return task;
     }
 
+    public CrawlerTask get(Long id) {
+        return container.get(id);
+    }
 }

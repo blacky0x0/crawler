@@ -12,12 +12,15 @@ import org.springframework.stereotype.Service;
 public class CrawlerService {
 
     @Autowired
-    private CrawlerTaskKeeper executor;
+    private CrawlerTaskKeeper keeper;
 
     public CrawlerTask add(String domain, String keyword) {
-        CrawlerTask task = executor.add(domain, keyword);
+        CrawlerTask task = keeper.add(domain, keyword);
         return task;
     }
 
 
+    public CrawlerTask get(Long id) {
+        return keeper.get(id);
+    }
 }

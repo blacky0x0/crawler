@@ -1,6 +1,9 @@
 package com.blacky.crawler.web;
 
+import com.blacky.crawler.model.CrawlerTask;
+import com.blacky.crawler.service.CrawlerService;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.junit.Assert.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -18,6 +21,9 @@ public class CrawlerRestTest extends AbstractRestTest {
 
     public static final String REST_URL = CrawlerRest.REST_URL + '/';
     public static final String REST_URL_NEW_ONE = REST_URL + "new";
+
+    @Autowired
+    CrawlerService service;
 
 
     // <editor-fold desc="1 test. CrawlerRest.add()">
@@ -45,9 +51,13 @@ public class CrawlerRestTest extends AbstractRestTest {
      * Expect 200 OK.
      */
     public void get_expectOk() throws Exception {
-        Integer id = 1;
+        String domain = "example.com";
+        String keyword = "example";
 
-        mockMvc.perform(get(REST_URL + id))
+        CrawlerTask task = service.add(domain, keyword);
+
+        mockMvc.perform(get(REST_URL + task.getId()))
+                .andDo(print())
                 .andExpect(forwardedUrl(null))
                 .andExpect(status().isOk());
     }
