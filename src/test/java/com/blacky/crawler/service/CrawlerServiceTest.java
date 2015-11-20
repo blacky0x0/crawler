@@ -1,5 +1,6 @@
 package com.blacky.crawler.service;
 
+import com.blacky.crawler.model.CrawlerTask;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -21,14 +22,17 @@ public class CrawlerServiceTest extends AbstractServiceTest {
         String domain = "example.com";
         String keyword = "example";
 
-        service.add(domain, keyword);
+        CrawlerTask task = service.add(domain, keyword);
 
-        fail();
+        assertEquals(Long.valueOf(1), task.getId());
+        assertEquals(domain, task.getDomain());
+        assertEquals(keyword, task.getKeyword());
     }
     // </editor-fold>
 
 
     // <editor-fold desc="1 test. CrawlerService.add(String domain, String keyword)">
+/*
     @Test
     public void get_result() throws Exception {
         Integer id = 1;
@@ -37,6 +41,7 @@ public class CrawlerServiceTest extends AbstractServiceTest {
 
         fail();
     }
+*/
     // </editor-fold>
 
 }

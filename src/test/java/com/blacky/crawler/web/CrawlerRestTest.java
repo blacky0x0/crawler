@@ -3,8 +3,10 @@ package com.blacky.crawler.web;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.forwardedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -22,15 +24,17 @@ public class CrawlerRestTest extends AbstractRestTest {
     @Test
     /**
      * Positive test.
-     * Expect 200 OK.
+     * Expect: 200 OK and id = 1 in body
      */
     public void add_expectOk() throws Exception {
         String domain = "example.com";
         String keyword = "example";
 
         mockMvc.perform(post(REST_URL_NEW_ONE).param("domain", domain).param("keyword", keyword))
+                .andDo(print())
                 .andExpect(forwardedUrl(null))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andExpect(content().string("1"));
     }
     // </editor-fold>
 
