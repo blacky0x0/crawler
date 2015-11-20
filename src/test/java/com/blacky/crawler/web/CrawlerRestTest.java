@@ -2,13 +2,13 @@ package com.blacky.crawler.web;
 
 import com.blacky.crawler.model.CrawlerTask;
 import com.blacky.crawler.service.CrawlerService;
+import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.junit.Assert.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.forwardedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -25,8 +25,15 @@ public class CrawlerRestTest extends AbstractRestTest {
     @Autowired
     CrawlerService service;
 
+    @Before
+    public void init() {
+        // reset the id counter
+        CrawlerTask.ID.set(0);
+    }
 
-    // <editor-fold desc="1 test. CrawlerRest.add()">
+
+
+    // <editor-fold desc="1 test. CrawlerRest.add(String, String)">
     @Test
     /**
      * Positive test.
@@ -44,7 +51,7 @@ public class CrawlerRestTest extends AbstractRestTest {
     }
     // </editor-fold>
 
-    // <editor-fold desc="1 test. CrawlerRest.get(int id)">
+    // <editor-fold desc="1 test. CrawlerRest.get(long id)">
     @Test
     /**
      * Positive test.

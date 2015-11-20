@@ -1,6 +1,7 @@
 package com.blacky.crawler.web;
 
 import com.blacky.crawler.model.CrawlerTask;
+import com.blacky.crawler.model.CrawlerTaskStatus;
 import com.blacky.crawler.service.CrawlerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,19 +40,9 @@ public class CrawlerRest {
         return new ResponseEntity<>(task.getId().toString(), HttpStatus.OK);
     }
 
-    // TODO: /rest/tasks/{id}  GET
-    /*
-        domain = ...
-        title = ...
-        amount = ...
-        density_title = ...
-        density_h1 = ...
-        density_body = ...
-    */
-
     /**
-     * The method saves a new item.
-     * @return 200 OK - item was created
+     * The method returns a computed item or status
+     * @return 200 OK
      */
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ResponseEntity get(@PathVariable(value = "id") long id) {
@@ -59,9 +50,12 @@ public class CrawlerRest {
 
         CrawlerTask task = service.get(id);
 
-        if (Objects.isNull(task)) {
+        if (Objects.isNull(task))
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-        }
+
+
+        if (!(task.getStatus() == CrawlerTaskStatus.SUCCESS.getCode()))
+            return new ResponseEntity<>(task.getStatus().toString(), HttpStatus.OK);
 
         return new ResponseEntity<>(task.toString(), HttpStatus.OK);
     }

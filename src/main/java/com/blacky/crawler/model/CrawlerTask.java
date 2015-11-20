@@ -1,5 +1,6 @@
 package com.blacky.crawler.model;
 
+import java.util.HashMap;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
@@ -10,8 +11,16 @@ public class CrawlerTask {
     private Long id;
     private String domain;
     private String keyword;
+    private Integer status = CrawlerTaskStatus.NEW.getCode();
+    private String title;
+    private Long amountWordsInBody;
 
-    public static AtomicLong ID = new AtomicLong(0);
+    // keyword density in title
+    // keyword density in h1
+    // keyword density in body
+    private HashMap<String, Integer> density = new HashMap<>(8);
+
+    public static final AtomicLong ID = new AtomicLong(0);
 
     {
         // Before each object creation
@@ -28,6 +37,8 @@ public class CrawlerTask {
         this.keyword = keyword;
     }
 
+
+    // <editor-fold desc="Getters & Setters">
     public Long getId() {
         return id;
     }
@@ -40,12 +51,54 @@ public class CrawlerTask {
         return keyword;
     }
 
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public Long getAmountWordsInBody() {
+        return amountWordsInBody;
+    }
+
+    public void setAmountWordsInBody(Long amountWordsInBody) {
+        this.amountWordsInBody = amountWordsInBody;
+    }
+
+    public void addDensity(String key, Integer value) {
+        density.put(key, value);
+    }
+
+    public HashMap<String, Integer> getDensity() {
+        return density;
+    }
+
+    public void setDensity(HashMap<String, Integer> density) {
+        this.density = density;
+    }
+    // </editor-fold>
+
+
     @Override
     public String toString() {
         return "CrawlerTask{" +
                 "id=" + id +
                 ", domain='" + domain + '\'' +
                 ", keyword='" + keyword + '\'' +
+                ", status=" + status +
+                ", title='" + title + '\'' +
+                ", amountWordsInBody=" + amountWordsInBody +
+                ", density=" + density +
                 '}';
     }
 }
