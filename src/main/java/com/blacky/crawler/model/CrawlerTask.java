@@ -8,16 +8,16 @@ import java.util.concurrent.atomic.AtomicLong;
  * Date: 20.11.15
  */
 public class CrawlerTask {
+    public static final String DEFAULT_PROTOCOL = "http://";
+
     private Long id;
     private String domain;
     private String keyword;
     private Integer status = CrawlerTaskStatus.NEW.getCode();
     private String title;
-    private Long amountWordsInBody;
+    private Integer amountWordsInBody;
 
-    // keyword density in title
-    // keyword density in h1
-    // keyword density in body
+    // keyword density for text in tags: title, h1, body
     private HashMap<String, Integer> density = new HashMap<>(8);
 
     public static final AtomicLong ID = new AtomicLong(0);
@@ -33,7 +33,13 @@ public class CrawlerTask {
 
     public CrawlerTask(String domain, String keyword) {
         this.id = ID.get();
-        this.domain = domain;
+
+        // if no protocol is set
+        if (!domain.contains("://"))
+            this.domain = DEFAULT_PROTOCOL.concat(domain);
+        else
+            this.domain = domain;
+
         this.keyword = keyword;
     }
 
@@ -67,11 +73,11 @@ public class CrawlerTask {
         this.title = title;
     }
 
-    public Long getAmountWordsInBody() {
+    public Integer getAmountWordsInBody() {
         return amountWordsInBody;
     }
 
-    public void setAmountWordsInBody(Long amountWordsInBody) {
+    public void setAmountWordsInBody(Integer amountWordsInBody) {
         this.amountWordsInBody = amountWordsInBody;
     }
 

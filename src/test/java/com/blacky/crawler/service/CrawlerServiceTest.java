@@ -1,6 +1,7 @@
 package com.blacky.crawler.service;
 
 import com.blacky.crawler.model.CrawlerTask;
+import com.blacky.crawler.model.CrawlerTaskStatus;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,6 +48,25 @@ public class CrawlerServiceTest extends AbstractServiceTest {
         CrawlerTask task = service.add(domain, keyword);
 
         assertNotNull(service.get(task.getId()));
+    }
+    // </editor-fold>
+
+
+    // <editor-fold desc="1 test. CrawlerService.compute(Long long)">
+    @Test
+    public void compute_result() throws Exception {
+        String domain = "jsoup.org";
+        String keyword = "jsoup";
+
+        CrawlerTask task = new CrawlerTask(domain, keyword);
+        service.compute(task);
+
+        assertEquals(CrawlerTaskStatus.SUCCESS.getCode(), (int) task.getStatus());
+        assertEquals("jsoup Java HTML Parser, with best of DOM, CSS, and jquery", task.getTitle());
+        assertEquals(341, (int) task.getAmountWordsInBody());
+        assertEquals(25, (int) task.getDensity().get("h1"));
+        assertEquals(9, (int) task.getDensity().get("title"));
+        assertEquals(4, (int) task.getDensity().get("body"));
     }
     // </editor-fold>
 
