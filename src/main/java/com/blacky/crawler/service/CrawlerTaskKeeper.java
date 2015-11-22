@@ -3,6 +3,7 @@ package com.blacky.crawler.service;
 import com.blacky.crawler.model.CrawlerTask;
 import org.springframework.stereotype.Component;
 
+import java.util.Collection;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -22,6 +23,10 @@ public class CrawlerTaskKeeper {
 
     public CrawlerTask get(Long id) {
         return container.get(id);
+    }
+
+    public Collection<CrawlerTask> getAll() {
+        return container.values();
     }
 
     public void delete(CrawlerTask task) {

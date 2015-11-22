@@ -1,5 +1,6 @@
 package com.blacky.crawler.model;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -9,6 +10,7 @@ import java.util.concurrent.atomic.AtomicLong;
  */
 public class CrawlerTask {
     public static final String DEFAULT_PROTOCOL = "http://";
+    public static final AtomicLong ID = new AtomicLong(0);
 
     private Long id;
     private String domain;
@@ -17,10 +19,12 @@ public class CrawlerTask {
     private String title;
     private Integer amountWordsInBody;
 
+    private LocalDateTime updatedTime = LocalDateTime.now();
+    private LocalDateTime createdTime = LocalDateTime.now();
+
     // keyword density for text in tags: title, h1, body
     private HashMap<String, Integer> density = new HashMap<>(8);
 
-    public static final AtomicLong ID = new AtomicLong(0);
 
     {
         // Before each object creation
@@ -92,6 +96,22 @@ public class CrawlerTask {
     public void setDensity(HashMap<String, Integer> density) {
         this.density = density;
     }
+
+    public LocalDateTime getUpdatedTime() {
+        return updatedTime;
+    }
+
+    public void setUpdatedTime(LocalDateTime updatedTime) {
+        this.updatedTime = updatedTime;
+    }
+
+    public LocalDateTime getCreatedTime() {
+        return createdTime;
+    }
+
+    public void setCreatedTime(LocalDateTime createdTime) {
+        this.createdTime = createdTime;
+    }
     // </editor-fold>
 
 
@@ -104,6 +124,8 @@ public class CrawlerTask {
                 ", status=" + status +
                 ", title='" + title + '\'' +
                 ", amountWordsInBody=" + amountWordsInBody +
+                ", updatedTime=" + updatedTime +
+                ", createdTime=" + createdTime +
                 ", density=" + density +
                 '}';
     }

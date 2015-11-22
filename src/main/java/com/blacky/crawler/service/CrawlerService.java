@@ -8,6 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.util.Collection;
+import java.util.Iterator;
 
 /**
  * User: blacky
@@ -19,6 +22,8 @@ public class CrawlerService {
     @Autowired
     private CrawlerTaskKeeper keeper;
 
+
+
     public CrawlerTask add(String domain, String keyword) {
         return keeper.add(domain, keyword);
     }
@@ -28,8 +33,29 @@ public class CrawlerService {
         return keeper.get(id);
     }
 
+    public Collection<CrawlerTask> getAll() {
+        return keeper.getAll();
+    }
+
     public void delete(CrawlerTask task) {
         keeper.delete(task);
+    }
+
+    /**
+     * Method deletes old items from storage.
+     * If a task was created more than a minute ago, then it is considered old.
+     * This method primarily used by scheduler.
+     */
+    public void deleteOld() {
+        Collection<CrawlerTask> items = getAll();
+        Iterator<CrawlerTask> it = items.iterator();
+
+        while (it.hasNext()) {
+            CrawlerTask item = it.next();
+            if (LocalDateTime.now().minusMinutes(1).isAfter(item.getCreatedTime()))
+                delete(item);
+        }
+
     }
 
     /**

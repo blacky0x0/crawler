@@ -6,6 +6,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.time.LocalDateTime;
+
 import static org.junit.Assert.*;
 
 /**
@@ -84,4 +86,38 @@ public class CrawlerServiceTest extends AbstractServiceTest {
     }
     // </editor-fold>
 
+
+    // <editor-fold desc="1 test. CrawlerService.getAll()">
+    @Test
+    public void getAll_result() throws Exception {
+        String domain = "example.com";
+        String keyword = "example";
+
+        service.add(domain, keyword);
+        service.add(domain, keyword);
+        service.add(domain, keyword);
+        service.add(domain, keyword);
+
+        assertEquals(4, service.getAll().size());
+    }
+    // </editor-fold>
+
+
+    // <editor-fold desc="1 test. CrawlerService.deleteOld()">
+    @Test
+    public void deleteOld_result() throws Exception {
+        String domain = "example.com";
+        String keyword = "example";
+
+        // Add two items
+        CrawlerTask task = service.add(domain, keyword);
+        task.setCreatedTime(LocalDateTime.now().minusMinutes(2));
+        task.setUpdatedTime(LocalDateTime.now().minusMinutes(2));
+        service.add(domain, keyword);
+
+        service.deleteOld();
+
+        assertEquals(1, service.getAll().size());
+    }
+    // </editor-fold>
 }
