@@ -1,16 +1,39 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:task="http://www.springframework.org/schema/task"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans.xsd
         http://www.springframework.org/schema/context
-        http://www.springframework.org/schema/context/spring-context.xsd">
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/task
+        http://www.springframework.org/schema/task/spring-task.xsd">
 
 
     <context:annotation-config/>
 
-    <context:component-scan base-package="com.blacky.crawler.repository"/>
     <context:component-scan base-package="com.blacky.crawler.service"/>
     <context:component-scan base-package="com.blacky.crawler.model"/>
+
+
+    <!-- It executes received tasks. Every thread collects and computes data. -->
+    <!-- The size of queue is Integer.MAX_VALUE -->
+    <bean id="taskExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+        <property name="corePoolSize" value="4" />
+        <property name="maxPoolSize" value="8" />
+    </bean>
+
+    <bean id="crawlerTaskExecutor" class="com.blacky.crawler.service.CrawlerTaskExecutor">
+        <constructor-arg ref="taskExecutor" />
+    </bean>
+
+
+    <!-- Executed every minute: 60 * 1000 = 60000 ms -->
+    <!-- Deletes old items from repository every minute -->
+    <task:scheduler id="cleaner" pool-size="1"/>
+    <task:scheduled-tasks scheduler="cleaner">
+        <task:scheduled ref="crawlerService" method="deleteOld" fixed-delay="60000"/>
+    </task:scheduled-tasks>
+
 
 </beans>
