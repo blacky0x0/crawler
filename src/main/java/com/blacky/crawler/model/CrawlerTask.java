@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
@@ -30,7 +31,7 @@ public class CrawlerTask implements Serializable {
     private LocalDateTime createdTime = LocalDateTime.now();
 
     // keyword density for text in tags: title, h1, body
-    private HashMap<String, Integer> density = new HashMap<>(8);
+    private Map<String, Integer> density = new HashMap<>(8);
 
 
     {
@@ -96,11 +97,11 @@ public class CrawlerTask implements Serializable {
         density.put(key, value);
     }
 
-    public HashMap<String, Integer> getDensity() {
+    public Map<String, Integer> getDensity() {
         return density;
     }
 
-    public void setDensity(HashMap<String, Integer> density) {
+    public void setDensity(Map<String, Integer> density) {
         this.density = density;
     }
 
