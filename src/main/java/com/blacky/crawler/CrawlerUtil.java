@@ -6,6 +6,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 
 /**
  * User: blacky
@@ -38,6 +39,7 @@ public class CrawlerUtil {
         task.addDensity("title", computeDensity(task.getKeyword(), task.getTitle()));
         task.addDensity("body", computeDensity(task.getKeyword(), doc.text()));
         task.addDensity("h1", computeDensity(task.getKeyword(), doc.getElementsByTag("h1").text()));
+        task.setUpdatedTime(LocalDateTime.now());
         task.setStatus(CrawlerTaskStatus.SUCCESS.getCode());
     }
 

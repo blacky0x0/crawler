@@ -16,8 +16,8 @@
     <context:component-scan base-package="com.blacky.crawler.model"/>
 
 
-    <!-- Executes received tasks. Every thread collects and computes data. -->
-    <!-- It has Integer.MAX_VALUE size of queue -->
+    <!-- It executes received tasks. Every thread collects and computes data. -->
+    <!-- The size of queue is Integer.MAX_VALUE -->
     <bean id="taskExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
         <property name="corePoolSize" value="4" />
         <property name="maxPoolSize" value="8" />
