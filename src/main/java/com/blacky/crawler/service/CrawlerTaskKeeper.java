@@ -23,4 +23,8 @@ public class CrawlerTaskKeeper {
     public CrawlerTask get(Long id) {
         return container.get(id);
     }
+
+    public void delete(CrawlerTask task) {
+        container.remove(task.getId());
+    }
 }

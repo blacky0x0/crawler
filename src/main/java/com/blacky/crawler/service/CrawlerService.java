@@ -28,6 +28,10 @@ public class CrawlerService {
         return keeper.get(id);
     }
 
+    public void delete(CrawlerTask task) {
+        keeper.delete(task);
+    }
+
     /**
      * The method starts a task
      */

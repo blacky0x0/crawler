@@ -52,6 +52,20 @@ public class CrawlerServiceTest extends AbstractServiceTest {
     // </editor-fold>
 
 
+    // <editor-fold desc="1 test. CrawlerService.delete(CrawlerTask task)">
+    @Test
+    public void delete_result() throws Exception {
+        String domain = "example.com";
+        String keyword = "example";
+
+        CrawlerTask task = service.add(domain, keyword);
+        service.delete(task);
+
+        assertNull(service.get(task.getId()));
+    }
+    // </editor-fold>
+
+
     // <editor-fold desc="1 test. CrawlerService.compute(Long long)">
     @Test
     public void compute_result() throws Exception {
