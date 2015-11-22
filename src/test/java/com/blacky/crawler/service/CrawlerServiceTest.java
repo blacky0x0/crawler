@@ -1,5 +1,6 @@
 package com.blacky.crawler.service;
 
+import com.blacky.crawler.CrawlerUtil;
 import com.blacky.crawler.model.CrawlerTask;
 import com.blacky.crawler.model.CrawlerTaskStatus;
 import org.junit.Before;
@@ -35,7 +36,7 @@ public class CrawlerServiceTest extends AbstractServiceTest {
         CrawlerTask task = service.add(domain, keyword);
 
         assertEquals(Long.valueOf(1), task.getId());
-        assertEquals(domain, task.getDomain());
+        assertEquals("http://".concat(domain), task.getDomain());
         assertEquals(keyword, task.getKeyword());
     }
     // </editor-fold>
@@ -75,7 +76,7 @@ public class CrawlerServiceTest extends AbstractServiceTest {
         String keyword = "jsoup";
 
         CrawlerTask task = new CrawlerTask(domain, keyword);
-        service.compute(task);
+        CrawlerUtil.crawl(task);
 
         assertEquals(CrawlerTaskStatus.SUCCESS.getCode(), (int) task.getStatus());
         assertEquals("jsoup Java HTML Parser, with best of DOM, CSS, and jquery", task.getTitle());
