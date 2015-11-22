@@ -1,4 +1,4 @@
-package com.blacky.crawler;
+package com.blacky.crawler.util;
 
 import com.blacky.crawler.model.CrawlerTask;
 import com.blacky.crawler.model.CrawlerTaskStatus;

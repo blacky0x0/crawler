@@ -1,6 +1,6 @@
 package com.blacky.crawler.service;
 
-import com.blacky.crawler.CrawlerUtil;
+import com.blacky.crawler.util.CrawlerUtil;
 import com.blacky.crawler.model.CrawlerTask;
 import com.blacky.crawler.model.CrawlerTaskStatus;
 import org.junit.Before;
