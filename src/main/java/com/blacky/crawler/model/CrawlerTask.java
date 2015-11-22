@@ -1,5 +1,8 @@
 package com.blacky.crawler.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.concurrent.atomic.AtomicLong;
@@ -8,18 +11,22 @@ import java.util.concurrent.atomic.AtomicLong;
  * User: blacky
  * Date: 20.11.15
  */
-public class CrawlerTask {
+public class CrawlerTask implements Serializable {
     public static final String DEFAULT_PROTOCOL = "http://";
     public static final AtomicLong ID = new AtomicLong(0);
 
     private Long id;
     private String domain;
     private String keyword;
+
+    @JsonIgnore
     private Integer status = CrawlerTaskStatus.NEW.getCode();
     private String title;
     private Integer amountWordsInBody;
 
+    @JsonIgnore
     private LocalDateTime updatedTime = LocalDateTime.now();
+    @JsonIgnore
     private LocalDateTime createdTime = LocalDateTime.now();
 
     // keyword density for text in tags: title, h1, body

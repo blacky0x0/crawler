@@ -6,12 +6,12 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.forwardedUrl;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
  * User: blacky
@@ -47,26 +47,53 @@ public class CrawlerRestTest extends AbstractRestTest {
                 .andDo(print())
                 .andExpect(forwardedUrl(null))
                 .andExpect(status().isOk())
-                .andExpect(content().string("1"));
+                .andExpect(jsonPath("$.id", is(1)));
     }
     // </editor-fold>
 
-    // <editor-fold desc="1 test. CrawlerRest.get(long id)">
+
+    // <editor-fold desc="2 tests. CrawlerRest.get(long id)">
     @Test
     /**
      * Positive test.
      * Expect 200 OK.
+     * Check all properties.
+     * Check amount of properties.
      */
-    public void get_expectOk() throws Exception {
+    public void get_expectOk_checkProperties() throws Exception {
         String domain = "example.com";
         String keyword = "example";
 
         CrawlerTask task = service.add(domain, keyword);
+        Thread.sleep(500);
 
         mockMvc.perform(get(REST_URL + task.getId()))
                 .andDo(print())
                 .andExpect(forwardedUrl(null))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id", is(1)))
+                .andExpect(jsonPath("$.domain", is("http://example.com")))
+                .andExpect(jsonPath("$.keyword", is("example")))
+                .andExpect(jsonPath("$.title", is("Example Domain")))
+                .andExpect(jsonPath("$.amountWordsInBody", is(30)))
+                .andExpect(jsonPath("$.density.h1", is(50)))
+                .andExpect(jsonPath("$.density.title", is(50)))
+                .andExpect(jsonPath("$.density.body", is(6)))
+                .andExpect(jsonPath("$.*", hasSize(6)))
+                .andExpect(jsonPath("$.density.*", hasSize(3)));
+    }
+
+    @Test
+    /**
+     * Negative test.
+     * No items in storage, therefore expect status -1
+     */
+    public void get_expectStatus01() throws Exception {
+        mockMvc.perform(get(REST_URL + 42))
+                .andDo(print())
+                .andExpect(forwardedUrl(null))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.status", is(-1)));
     }
     // </editor-fold>
 }
