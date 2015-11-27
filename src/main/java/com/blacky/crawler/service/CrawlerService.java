@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
-import java.util.Iterator;
 
 /**
  * User: blacky
@@ -50,14 +49,10 @@ public class CrawlerService {
      */
     public void deleteOld() {
         Collection<CrawlerTask> items = getAll();
-        Iterator<CrawlerTask> it = items.iterator();
 
-        while (it.hasNext()) {
-            CrawlerTask item = it.next();
-            if (LocalDateTime.now().minusMinutes(1).isAfter(item.getCreatedTime()))
-                delete(item);
-        }
-
+        items.stream()
+                .filter(item -> LocalDateTime.now().minusMinutes(1).isAfter(item.getCreatedTime()))
+                .forEach(this::delete);
     }
 
 }

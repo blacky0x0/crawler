@@ -16,28 +16,10 @@ public class CrawlerTaskExecutor {
         this.taskExecutor = taskExecutor;
     }
 
-
-    private class Job implements Runnable {
-        private CrawlerTask task;
-
-        public Job(CrawlerTask task) {
-            this.task = task;
-        }
-
-        public void run() {
-            LOG.debug("Execute task #{}", task.getId());
-            CrawlerUtil.crawl(task);
-            LOG.trace("Task was computed: {}", task);
-        }
-    }
-
-
-    /**
-     * The method starts a task
-     */
     public void compute(CrawlerTask task) {
+        LOG.trace("Task was enqueued. ID: {}", task.getId());
         task.setStatus(CrawlerTaskStatus.RUN.getCode());
-        taskExecutor.execute(new Job(task));
+        taskExecutor.execute(() -> CrawlerUtil.crawl(task));
     }
 
 }

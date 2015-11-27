@@ -4,6 +4,8 @@ import com.blacky.crawler.model.CrawlerTask;
 import com.blacky.crawler.model.CrawlerTaskStatus;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -13,25 +15,21 @@ import java.time.LocalDateTime;
  * Date: 22.11.15
  */
 public class CrawlerUtil {
+    private static final Logger LOG = LoggerFactory.getLogger(CrawlerUtil.class);
 
     /**
      * The method crawls a domain web page and fill in a received task.
      */
     public static void crawl(CrawlerTask task) {
+        LOG.debug("Execute task #{}", task.getId());
         Document doc;
 
         try { doc = Jsoup.connect(task.getDomain()).get(); }
         catch (IOException e)
         {
             task.setStatus(CrawlerTaskStatus.FAIL.getCode());
-
-            StringBuilder sb = new StringBuilder();
-            sb.append("Can't crawl the domain: ");
-            sb.append(task.getDomain());
-            sb.append("; Task id: ");
-            sb.append(task.getId());
-
-            throw new RuntimeException(sb.toString());
+            String msg = String.format("Can't crawl the domain: %s; Task id: %s", task.getDomain(), task.getId());
+            throw new RuntimeException(msg);
         }
 
         task.setTitle(doc.title());
@@ -41,6 +39,8 @@ public class CrawlerUtil {
         task.addDensity("h1", computeDensity(task.getKeyword(), doc.getElementsByTag("h1").text()));
         task.setUpdatedTime(LocalDateTime.now());
         task.setStatus(CrawlerTaskStatus.SUCCESS.getCode());
+
+        LOG.trace("Task was computed: {}", task);
     }
 
     /**
