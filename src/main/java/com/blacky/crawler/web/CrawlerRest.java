@@ -3,6 +3,8 @@ package com.blacky.crawler.web;
 import com.blacky.crawler.model.CrawlerTask;
 import com.blacky.crawler.model.CrawlerTaskStatus;
 import com.blacky.crawler.service.CrawlerService;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,13 +13,15 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Objects;
 
-/**
- * User: blacky
- * Date: 19.11.15
- */
+
 @RestController
 @RequestMapping(value = CrawlerRest.REST_URL, produces = CrawlerRest.JSON_UTF8)
 public class CrawlerRest {
@@ -28,6 +32,32 @@ public class CrawlerRest {
 
     @Autowired
     private CrawlerService service;
+
+
+    @RequestMapping(value = "/new", method = RequestMethod.POST)
+    public ResponseEntity addWithBody(@Valid @RequestBody ClientTask clientTask) {
+        LOG.debug("Received parameters: domain = {} ; keyword = {}", clientTask.domain, clientTask.keyword);
+
+        CrawlerTask task = service.add(clientTask.domain, clientTask.keyword);
+
+        HashMap<String, Long> map = new HashMap<>(4);
+        map.put("id", task.getId());
+
+        return new ResponseEntity<>(map, HttpStatus.OK);
+    }
+
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    static class ClientTask implements Serializable {
+
+        @JsonProperty("domain")
+        public String domain;
+
+        @NotNull(message = "Please provide a valid valid keyword")
+        @Size(min = 1, max = 10, message="Please provide a valid keyword")
+        @JsonProperty("keyword")
+        public String keyword;
+
+    }
 
 
     /**
